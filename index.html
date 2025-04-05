@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catatan Keuangan</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      background-color: white;
+      margin: auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2, h3 {
+      text-align: center;
+      margin-top: 0;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    input, select, button {
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background-color: #eee;
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    li.income {
+      border-left: 5px solid green;
+    }
+
+    li.expense {
+      border-left: 5px solid red;
+    }
+
+    li button {
+      background-color: crimson;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+
+      .container {
+        padding: 15px;
+      }
+
+      input, select, button {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Catatan Keuangan</h2>
+
+    <form id="transaction-form">
+      <input type="text" id="desc" placeholder="Deskripsi" required />
+      <input type="number" id="amount" placeholder="Jumlah" required />
+      <select id="type">
+        <option value="income">Pemasukan</option>
+        <option value="expense">Pengeluaran</option>
+      </select>
+      <button type="submit">Tambah Transaksi</button>
+    </form>
+
+    <h3>Transaksi</h3>
+    <ul id="transaction-list"></ul>
+
+    <h3>Ringkasan</h3>
+    <p>Pemasukan: <span id="total-income">0</span></p>
+    <p>Pengeluaran: <span id="total-expense">0</span></p>
+    <p>Saldo: <strong id="balance">0</strong></p>
+  </div>
+  
+  <script src="app.js"></script>
+</body>
+</html>
