@@ -73,3 +73,17 @@ function renderTransactions() {
   expenseEl.textContent = expense;
   balanceEl.textContent = income - expense;
 }
+
+async function getTransactions() {
+  const res = await fetch("http://localhost:3000/transactions");
+  const data = await res.json();
+  console.log(data);
+}
+
+async function addTransaction(trx) {
+  await fetch("http://localhost:3000/transactions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(trx)
+  });
+}
