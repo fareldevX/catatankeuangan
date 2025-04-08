@@ -53,9 +53,9 @@ function renderTransactions() {
 
     const btn = document.createElement("button");
     btn.textContent = "Hapus";
-    btn.onclick = () => {
-      transactions = transactions.filter(t => t.id !== trx.id);
-      saveToLocalStorage();
+    btn.onclick = async () => {
+      await deleteTransaction(trx._id); // gunakan _id dari MongoDB
+      transactions = await getTransactions(); // refresh data
       renderTransactions();
     };
 
@@ -74,16 +74,57 @@ function renderTransactions() {
   balanceEl.textContent = income - expense;
 }
 
+async function deleteTransaction(id) {
+  try {
+    await fetch(`http://localhost:3000/transactions/${id}`, {
+      method: "DELETE"
+    });
+  } catch (err) {
+    console.error("Gagal hapus data:", err);
+  }
+}
+
+// Tampilkan data dari backend saat halaman dimuat
+window.addEventListener("DOMContentLoaded", async () => {
+  transactions = await getTransactions();
+  renderTransactions();
+});
+
+form.addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const transaction = {
+    desc: descInput.value,
+    amount: parseFloat(amountInput.value),
+    type: typeInput.value
+  };
+
+  await addTransaction(transaction); // kirim ke backend
+  transactions = await getTransactions(); // ambil data terbaru
+  renderTransactions(); // render ulang
+  form.reset();
+});
+
 async function getTransactions() {
-  const res = await fetch("http://localhost:3000/transactions");
-  const data = await res.json();
-  console.log(data);
+  try {
+    const res = await fetch("http://localhost:3000/transactions");
+    const data = await res.json();
+    return data; // kembalikan data agar bisa disimpan ke transactions
+  } catch (err) {
+    console.error("Gagal ambil data:", err);
+    return [];
+  }
 }
 
 async function addTransaction(trx) {
-  await fetch("http://localhost:3000/transactions", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(trx)
-  });
+  try {
+    const res = await fetch("http://localhost:3000/transactions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(trx)
+    });
+    return await res.json();
+  } catch (err) {
+    console.error("Gagal tambah data:", err);
+  }
 }

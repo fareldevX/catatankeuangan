@@ -3,6 +3,7 @@ require('dotenv').config();
 const port = process.env.PORT || 3000;
 const db = process.env.MONGO_URI;
 const secret = process.env.JWT_SECRET;
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -12,7 +13,10 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB connection
-mongoose.connect('mongodb+srv://mobillamborghini9999:farelaja@cluster0.enkkoof.mongodb.net/moneytracker?retryWrites=true&w=majority&appName=Cluster0');
+mongoose.connect(db, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 // Schema
 const Transaction = mongoose.model('Transaction', {
