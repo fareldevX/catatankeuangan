@@ -4,8 +4,8 @@ const port = process.env.PORT || 3000;
 const db = process.env.MONGO_URI;
 const secret = process.env.JWT_SECRET;
 
-const express = require('express');
 const mongoose = require('mongoose');
+const express = require('express');
 const cors = require('cors');
 
 const app = express();
@@ -13,10 +13,9 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB connection
-mongoose.connect(db, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+mongoose.connect(db)
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.error("MongoDB connection error:", err));
 
 // Schema
 const Transaction = mongoose.model('Transaction', {
